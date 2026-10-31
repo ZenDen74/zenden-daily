@@ -1,0 +1,21 @@
+name: Refresh ZenDen videos & deploy
+on:
+  schedule: [{cron: "0 */6 * * *"}]
+  workflow_dispatch:
+  push: {branches: [main]}
+permissions: {contents: write, pages: write, id-token: write}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 20}
+      - run: node fetch-videos.js
+      - run: |
+          git config user.name zenden-bot; git config user.email bot@users.noreply.github.com
+          git add public/videos.json; git diff --cached --quiet || git commit -m "Update videos" && git push
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: public}
+      - uses: actions/deploy-pages@v4
