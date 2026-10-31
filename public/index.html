@@ -1,18 +1,44 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ZenDen Daily</title><meta name="description" content="Daily Stoic wisdom paired with Scripture, from ZenDen.">
-<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0f1a17">
-<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="ZenDen">
-<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"><link rel="stylesheet" href="style.css"></head><body>
-<header><h1>ZENDEN DAILY</h1><p id="date"></p></header>
-<main>
-<section class="card"><div class="theme" id="theme"></div><h2 style="font-weight:normal;margin:.3em 0 0;color:var(--gold)">Stoic Wisdom</h2><blockquote id="quote"></blockquote><cite id="qcite"></cite></section>
-<section class="card"><div class="theme">&nbsp;</div><h2 style="font-weight:normal;margin:.3em 0 0;color:var(--gold)">Scripture</h2><blockquote id="verse"></blockquote><cite id="vcite"></cite></section>
-<section class="card full"><h2 style="font-weight:normal;margin:0;color:var(--gold)">Reflection</h2><p class="refl" id="refl"></p>
-<div class="nav"><button id="prev">‹ Previous</button><button id="today">Today</button><button id="next">Next ›</button><button id="share">Share</button></div></section>
-<section class="card full"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px"><h2 style="font-weight:normal;margin:0;color:var(--gold)">Latest from ZenDen</h2>
-<a class="btn sub" href="https://www.youtube.com/@zenden74?sub_confirmation=1" target="_blank" rel="noopener">▶ Subscribe</a></div><div class="vids" id="vids" style="margin-top:14px"></div></section>
-<section class="card full install" id="install"><b>Install ZenDen Daily</b><br>
-<b>iPhone / iPad:</b> open in Safari → tap Share <span aria-hidden="true">⎋</span> → “Add to Home Screen”.<br>
-<b>Android:</b> open in Chrome → tap ⋮ menu → “Install app” / “Add to Home screen”. <button id="installBtn" hidden>Install now</button></section>
-</main><footer>Quotes: Marcus Aurelius (tr. Casaubon), Epictetus (tr. Higginson), Seneca (tr. Stewart). Scripture: King James Version (public domain).</footer>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#f6f2ea" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#121614" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="ZenDen">
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="style.css"></head><body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div><div class="eyebrow" id="date"></div><h1>ZenDen <span>Daily</span></h1></div>
+<div class="topbtns"><span class="streak" id="streak" title="Days in a row" aria-live="polite"></span>
+<button class="icon" id="themeBtn" aria-label="Toggle light or dark theme">◐</button></div></header>
+<main id="main">
+<section class="view active" id="v-today" aria-label="Today">
+ <article class="daily" id="card" aria-live="polite">
+  <div class="pill" id="theme"></div>
+  <figure class="q"><blockquote id="quote"></blockquote><figcaption id="qcite"></figcaption></figure>
+  <div class="divider" aria-hidden="true"><span>✦</span></div>
+  <figure class="q verse"><blockquote id="verse"></blockquote><figcaption id="vcite"></figcaption></figure>
+  <div class="refl"><div class="label">Reflection</div><p id="refl"></p></div>
+  <div class="actions">
+   <button class="act" id="fav" aria-pressed="false" aria-label="Save to favorites"><span aria-hidden="true">♡</span> Save</button>
+   <button class="act" id="share"><span aria-hidden="true">↗</span> Share</button>
+  </div>
+ </article>
+ <nav class="daynav" aria-label="Browse days"><button id="prev" aria-label="Previous day">‹</button><button id="today" class="ghost">Today</button><button id="next" aria-label="Next day">›</button></nav>
+ <a class="watchcta" id="latest" target="_blank" rel="noopener" hidden></a>
+</section>
+<section class="view" id="v-saved" aria-label="Saved"><h2>Saved</h2><p class="muted" id="savedEmpty">Tap ♡ Save on a day to keep it here.</p><div id="savedList" class="list"></div></section>
+<section class="view" id="v-watch" aria-label="Watch"><div class="row"><h2>Latest from ZenDen</h2><a class="sub" href="https://www.youtube.com/@zenden74?sub_confirmation=1" target="_blank" rel="noopener">Subscribe</a></div><div class="vids" id="vids"></div></section>
+<section class="view" id="v-more" aria-label="More"><h2>More</h2>
+ <div class="panel" id="install"><h3>Install the app</h3><p><b>iPhone / iPad:</b> open in Safari, tap Share, then “Add to Home Screen”.</p><p><b>Android:</b> open in Chrome, tap ⋮, then “Install app”.</p><button class="primary" id="installBtn" hidden>Install now</button></div>
+ <div class="panel"><h3>Text size</h3><div class="seg"><button data-fs="0.92">A−</button><button data-fs="1">A</button><button data-fs="1.12">A+</button><button data-fs="1.25">A++</button></div></div>
+ <div class="panel"><h3>Appearance</h3><div class="seg"><button data-th="auto">Auto</button><button data-th="light">Light</button><button data-th="dark">Dark</button></div></div>
+ <div class="panel"><h3>About</h3><p class="muted">A daily Stoic thought paired with Scripture, from the ZenDen channel. Quotes: Marcus Aurelius (tr. Casaubon), Epictetus (tr. Higginson), Seneca (tr. Stewart). Scripture: King James Version. All public domain.</p></div>
+</section>
+</main>
+<nav class="tabs" aria-label="Main">
+ <button data-v="today" class="on" aria-current="page"><span aria-hidden="true">☀</span>Today</button>
+ <button data-v="saved"><span aria-hidden="true">♡</span>Saved</button>
+ <button data-v="watch"><span aria-hidden="true">▶</span>Watch</button>
+ <button data-v="more"><span aria-hidden="true">≡</span>More</button>
+</nav>
+<div class="toast" id="toast" role="status"></div>
 <script src="app.js"></script></body></html>
